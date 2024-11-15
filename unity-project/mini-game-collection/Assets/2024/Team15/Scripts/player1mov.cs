@@ -2,31 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+namespace MiniGameCollection.Games2024.Team15
 {
-    public float moveSpeed = 5f;  // Movement speed
-    private Rigidbody rb;
-
-    void Start()
+    public class PlayerController : MonoBehaviour
     {
-        rb = GetComponent<Rigidbody>();
-    }
+        public float moveSpeed = 5f;  // Movement speed
+        private Rigidbody rb;
 
-    void Update()
-    {
-        MovePlayer();
-    }
+        void Start()
+        {
+            rb = GetComponent<Rigidbody>();
+        }
 
-    void MovePlayer()
-    {
-        // Get horizontal movement input (forward/backward and left/right)
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
+        void Update()
+        {
+            MovePlayer();
+        }
 
-        // Calculate movement direction (horizontal only)
-        Vector3 move = new Vector3(moveX, 0f, moveZ).normalized;
+        void MovePlayer()
+        {
+            // Get horizontal movement input (forward/backward and left/right)
+            float moveX = Input.GetAxis("Horizontal");
+            float moveZ = Input.GetAxis("Vertical");
 
-        // Apply the movement as force, but only on the X and Z axes (no vertical movement)
-        rb.velocity = new Vector3(move.x * moveSpeed, rb.velocity.y, move.z * moveSpeed);
+            // Calculate movement direction (horizontal only)
+            Vector3 move = new Vector3(moveX, 0f, moveZ).normalized;
+
+            // Apply the movement as force, but only on the X and Z axes (no vertical movement)
+            rb.velocity = new Vector3(move.x * moveSpeed, rb.velocity.y, move.z * moveSpeed);
+        }
     }
 }

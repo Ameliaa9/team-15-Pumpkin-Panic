@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class StartButtonHandler : MonoBehaviour
+namespace MiniGameCollection.Games2024.Team15
 {
-    // This method will be called when the button is clicked
-    public void StartGame()
+    public class StartButtonHandler : MonoBehaviour
     {
-        // Load the next scene (replace "GameScene" with the actual scene name)
-        SceneManager.LoadScene("GameScene");
+        // This method will be called when the button is clicked
+        public void StartGame()
+        {
+            // Load the next scene (replace "GameScene" with the actual scene name)
+            SceneManager.LoadScene("GameScene");
+        }
     }
 }

@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class RestartButton : MonoBehaviour
+namespace MiniGameCollection.Games2024.Team15
 {
-    public void RestartGame()
+    public class RestartButton : MonoBehaviour
     {
-        // Reloads the current scene (restart the game)
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        public void RestartGame()
+        {
+            // Reloads the current scene (restart the game)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }
