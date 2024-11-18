@@ -19,12 +19,12 @@ In Pumpkin Panic, players are on a square platform, dodging falling pumpkins whi
 ## 1. Objective Statement
 *[Ali]* Outline an objective statement for the design. What emotional and gameplay goals are you striving for with this design? Why?
 
-
-
+The emotional and gameplay goals we are striving for this design is excitement, frustration, engaging and playable, motivation to win, and feeling a sense of accomplishment.
 
 ## 2. Design Rational
 *[Ali]* Detail design rationale. What do you envision? How does this support the overall project/company goal?
 
+We envision a game that allows players to fight against their friends in a playful manner. Teaching players that no matter if they lose or win, they should treat each other equally. It supports the overall project/company goal by using enhanced visuals, and mechanics to better immerse players which will make the game sell more and grant us budget.
 
 ## 3. Target Audience
 The target audience for Pumpkin Panic is players aged 10 and up. It’s perfect for both casual and hardcore gamers. The gameplay is easy to pick up, making it accessible to casual players, while the stun mechanic adds a fun, chaotic element that keeps things competitive and exciting for everyone. 
@@ -35,8 +35,7 @@ For this project, we will be using Unity. It’s the easiest platform for us sin
 ## 5. Player Interaction
 *[Ali]*How will players interact with each other? Is it competitive, cooperative, or a mix of both?
 
- 
-
+The players will interact each other by going against 1 v 1, which makes it competitive and cause immersiveness.
 
 ## 6. Resources and Citations
 - **Assets** - 
