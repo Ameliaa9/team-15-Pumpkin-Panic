@@ -6,96 +6,63 @@ namespace MiniGameCollection.Games2024.Team15
 {
     public class PumpkinSpawner : MonoBehaviour
     {
-        // References to the ScoreTracker
-        private ScoreTracker scoreTracker;
+        public GameObject pumpkinPrefab;       // Pumpkin prefab to spawn
+        public float spawnInterval = 1f;       // Minimum time interval between spawns
+        private float spawnTimer = 0f;         // Timer to track spawn interval
 
-        // Pumpkin Prefab and spawn position
-        [SerializeField] private GameObject pumpkinPrefab; // Drag the pumpkin prefab here
-        [SerializeField] private Transform[] spawnPoints; // Array of spawn points for pumpkins (drag these in Unity)
-        [SerializeField] private float spawnInterval = 2f; // Time interval between spawns
+        public int pumpkinsToSpawnAtOnce = 5;  // Number of pumpkins to spawn at once
 
-        // Timer for spawning pumpkins
-        private float spawnTimer;
+        // Reference to the platform collider to get its bounds
+        public Collider platformCollider;
 
-        private void Start()
-        {
-            // Get reference to ScoreTracker
-            scoreTracker = FindObjectOfType<ScoreTracker>();
-
-            // Set the initial spawn timer
-            spawnTimer = spawnInterval;
-        }
+        public float spawnHeightOffset = 20f;  // How high above the platform to spawn pumpkins
 
         private void Update()
         {
-            // Decrease the spawn timer
-            spawnTimer -= Time.deltaTime;
+            spawnTimer += Time.deltaTime;
 
-            // If the timer is up, spawn a pumpkin
-            if (spawnTimer <= 0f)
+            // Only spawn pumpkins if the spawn timer reaches the minimum interval
+            if (spawnTimer >= spawnInterval)
             {
-                SpawnPumpkin();
-                spawnTimer = spawnInterval; // Reset the timer
+                spawnTimer = 0f;
+                SpawnMultiplePumpkins();  // Call method to spawn multiple pumpkins with random delays
             }
         }
 
-        // Spawn a pumpkin at a random spawn point
-        private void SpawnPumpkin()
+        void SpawnMultiplePumpkins()
         {
-            // Choose a random spawn point
-            int randomIndex = Random.Range(0, spawnPoints.Length);
-            Transform spawnPoint = spawnPoints[randomIndex];
-
-            // Instantiate the pumpkin at the selected spawn point
-            GameObject pumpkin = Instantiate(pumpkinPrefab, spawnPoint.position, Quaternion.identity);
-
-            // Optionally, add a Rigidbody2D or Rigidbody for falling (if not already set in the prefab)
-            Rigidbody rb = pumpkin.GetComponent<Rigidbody>();
-            if (rb == null)
+            if (platformCollider != null)
             {
-                rb = pumpkin.AddComponent<Rigidbody>();
-            }
-            rb.useGravity = true; // Make sure gravity affects the pumpkin
+                // Get the platform's bounds
+                Bounds platformBounds = platformCollider.bounds;
 
-            // Pass the reference of the ScoreTracker to the Pumpkin object
-            Pumpkin pumpkinScript = pumpkin.GetComponent<Pumpkin>();
-            if (pumpkinScript != null)
-            {
-                pumpkinScript.Initialize(scoreTracker);
+                for (int i = 0; i < pumpkinsToSpawnAtOnce; i++)  // Loop to spawn multiple pumpkins
+                {
+                    // Generate random X and Z positions within the platform's bounds
+                    float randomX = Random.Range(platformBounds.min.x, platformBounds.max.x);
+                    float randomZ = Random.Range(platformBounds.min.z, platformBounds.max.z);
+                    float spawnY = platformBounds.max.y + spawnHeightOffset;  // Height above the platform with added offset
+
+                    // Set the spawn position
+                    Vector3 spawnPosition = new Vector3(randomX, spawnY, randomZ);
+
+                    // Randomize the delay for each pumpkin to fall at different times
+                    float randomDelay = Random.Range(0f, spawnInterval); // Random delay between 0 and spawnInterval
+
+                    // Start a coroutine to instantiate the pumpkin after the random delay
+                    StartCoroutine(SpawnPumpkinWithDelay(spawnPosition, randomDelay));
+                }
             }
         }
 
-        // Handle pumpkin collisions with players
-        public class Pumpkin : MonoBehaviour
+        // Coroutine to handle delayed pumpkin spawn
+        IEnumerator SpawnPumpkinWithDelay(Vector3 spawnPosition, float delay)
         {
-            private ScoreTracker scoreTracker; // Store the reference to ScoreTracker
+            // Wait for the random delay before spawning the pumpkin
+            yield return new WaitForSeconds(delay);
 
-            // Initialize the pumpkin with a reference to the ScoreTracker
-            public void Initialize(ScoreTracker scoreTracker)
-            {
-                this.scoreTracker = scoreTracker;
-            }
-
-            private void OnTriggerEnter(Collider other)
-            {
-                // Check for collisions with Player 1 and Player 2
-                if (other.CompareTag("Player1"))
-                {
-                    // Call the method to reduce Player 1's life
-                    scoreTracker.Player1LoseLife();
-
-                    // Destroy the pumpkin after collision
-                    Destroy(gameObject);
-                }
-                else if (other.CompareTag("Player2"))
-                {
-                    // Call the method to reduce Player 2's life
-                    scoreTracker.Player2LoseLife();
-
-                    // Destroy the pumpkin after collision
-                    Destroy(gameObject);
-                }
-            }
+            // Instantiate the pumpkin at the spawn position after the delay
+            Instantiate(pumpkinPrefab, spawnPosition, Quaternion.identity);
         }
     }
 }
